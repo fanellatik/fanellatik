@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fanellatik – Football Jerseys</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #F0C96B;
+    --gold-dark: #8B6914;
+    --black: #0A0A0A;
+    --black-soft: #111111;
+    --black-card: #161616;
+    --black-border: #222222;
+    --cream: #F5EDD6;
+    --white: #FFFFFF;
+    --text-muted: #888888;
+    --success: #4CAF50;
+    --danger: #E53935;
+    --whatsapp: #25D366;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'Barlow', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── VIEWS ─── */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ─── NAVBAR ─── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,10,0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--gold-dark);
+    padding: 0 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+  }
+  .nav-logo img { height: 44px; width: 44px; object-fit: contain; border-radius: 6px; }
+  .nav-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 2px;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .nav-brand span { display: block; font-family: 'Barlow', sans-serif; font-size: 0.55rem; letter-spacing: 4px; color: var(--text-muted); font-weight: 400; }
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+  .nav-wa {
+    background: var(--whatsapp);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 0.85rem;
+    letter-spacing: 1px;
+    text-decoration: none;
+    display: flex; align-items: center; gap: 6px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 0 0 rgba(37,211,102,0.4);
+    animation: pulse-wa 2.5s infinite;
+  }
+  .nav-wa:hover { transform: scale(1.05); }
+  @keyframes pulse-wa {
+    0%,100% { box-shadow: 0 0 0 0 rgba(37,211,102,0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(37,211,102,0); }
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    padding: 70px 20px 55px;
+    text-align: center;
+    overflow: hidden;
+  }
+  /* Logo watermark background */
+  .hero-logo-bg {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(420px, 80vw);
+    height: min(420px, 80vw);
+    opacity: 0.06;
+    pointer-events: none;
+    object-fit: contain;
+    filter: grayscale(100%);
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(201,168,76,0.13) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: var(--gold-dark);
+    color: var(--gold-light);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem; letter-spacing: 4px; font-weight: 700;
+    padding: 4px 16px; border-radius: 2px; margin-bottom: 18px;
+    text-transform: uppercase;
+  }
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.2rem, 11vw, 6.5rem);
+    letter-spacing: 4px;
+    line-height: 0.95;
+    color: var(--cream);
+    position: relative;
+  }
+  .hero h1 .brand-line { color: var(--gold); display: block; }
+  .hero p {
+    margin: 22px auto 0;
+    max-width: 480px;
+    color: var(--text-muted);
+    font-size: 1rem; line-height: 1.65;
+    position: relative;
+  }
+  .hero-divider {
+    width: 60px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 28px auto;
+    position: relative;
+  }
+
+  /* ─── FILTER BAR ─── */
+  .filter-bar {
+    padding: 24px 20px 20px;
+    display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+  }
+  .filter-btn {
+    background: var(--black-card);
+    border: 1px solid var(--black-border);
+    color: var(--text-muted);
+    padding: 8px 18px; border-radius: 30px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem; letter-spacing: 1px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--gold-dark);
+    border-color: var(--gold);
+    color: var(--gold-light);
+  }
+
+  /* ─── SEARCH ─── */
+  .search-wrap {
+    padding: 0 20px 20px;
+    display: flex; justify-content: center;
+  }
+  .search-box {
+    width: 100%; max-width: 420px;
+    background: var(--black-card);
+    border: 1px solid var(--black-border);
+    border-radius: 8px; padding: 10px 16px;
+    color: var(--cream); font-family: 'Barlow', sans-serif;
+    font-size: 0.9rem; outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-box::placeholder { color: var(--text-muted); }
+  .search-box:focus { border-color: var(--gold-dark); }
+
+  /* ─── GRID ─── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+    padding: 0 20px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ─── CARD ─── */
+  .card {
+    background: var(--black-card);
+    border: 1px solid var(--black-border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+    cursor: default;
+    animation: fadeUp 0.4s ease both;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: var(--gold-dark);
+    box-shadow: 0 12px 32px rgba(201,168,76,0.12);
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .card-img {
+    width: 100%; height: 200px;
+    object-fit: cover;
+    background: #1a1a1a;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem;
+  }
+  .card-img.placeholder {
+    background: linear-gradient(135deg, #1a1a1a 0%, #222 100%);
+  }
+  .card-body { padding: 16px; }
+  .card-league {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem; letter-spacing: 3px;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 4px;
+  }
+  .card-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.15rem; font-weight: 700;
+    color: var(--cream); margin-bottom: 10px; line-height: 1.2;
+  }
+  .card-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 12px;
+  }
+  .card-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem; color: var(--gold-light);
+    letter-spacing: 1px;
+  }
+  .card-price span { font-size: 0.75rem; color: var(--text-muted); font-family: 'Barlow', sans-serif; margin-left: 2px; }
+  .badge {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem; letter-spacing: 1px; font-weight: 700;
+    padding: 3px 10px; border-radius: 20px;
+    text-transform: uppercase;
+  }
+  .badge-stock { background: rgba(76,175,80,0.15); color: #66BB6A; border: 1px solid rgba(76,175,80,0.3); }
+  .badge-out { background: rgba(229,57,53,0.15); color: #EF5350; border: 1px solid rgba(229,57,53,0.3); }
+  .badge-few { background: rgba(255,167,38,0.15); color: #FFA726; border: 1px solid rgba(255,167,38,0.3); }
+
+  .card-sizes { display: flex; gap: 5px; flex-wrap: wrap; margin: 8px 0; }
+  .size-tag {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--black-border);
+    color: var(--text-muted);
+    font-size: 0.65rem; font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 1px; padding: 2px 7px; border-radius: 3px;
+  }
+  .size-tag.avail { border-color: var(--gold-dark); color: var(--gold); }
+
+  .wa-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; margin-top: 12px;
+    background: var(--whatsapp); color: #fff;
+    border: none; border-radius: 8px;
+    padding: 10px; cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.9rem; font-weight: 700; letter-spacing: 1px;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .wa-btn:hover { opacity: 0.9; transform: scale(1.02); }
+  .wa-btn.disabled { background: #333; color: #555; cursor: not-allowed; pointer-events: none; }
+
+  .empty {
+    grid-column: 1/-1;
+    text-align: center; padding: 60px 20px;
+    color: var(--text-muted);
+  }
+  .empty .emoji { font-size: 3rem; margin-bottom: 12px; }
+
+  /* ─── SOCIAL SECTION ─── */
+  .social-section {
+    border-top: 1px solid var(--black-border);
+    padding: 48px 20px;
+    text-align: center;
+    background: var(--black-soft);
+  }
+  .social-section h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem; letter-spacing: 3px;
+    color: var(--gold); margin-bottom: 6px;
+  }
+  .social-section p {
+    color: var(--text-muted); font-size: 0.85rem;
+    margin-bottom: 28px; letter-spacing: 1px;
+  }
+  .social-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+  .social-btn {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 22px; border-radius: 10px;
+    text-decoration: none;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.95rem; font-weight: 700; letter-spacing: 1px;
+    transition: transform 0.2s, opacity 0.2s;
+    border: 1px solid;
+  }
+  .social-btn:hover { transform: translateY(-2px); opacity: 0.9; }
+  .social-btn.instagram {
+    background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+    color: #fff; border-color: transparent;
+  }
+  .social-btn.tiktok {
+    background: #000; color: #fff;
+    border-color: #333;
+  }
+  .social-btn.facebook {
+    background: #1877F2; color: #fff; border-color: transparent;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--black-border);
+    padding: 36px 20px;
+    text-align: center;
+    background: var(--black);
+  }
+  .footer-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem; letter-spacing: 4px;
+    color: var(--gold); margin-bottom: 4px;
+  }
+  .footer-sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem; letter-spacing: 5px;
+    color: var(--text-muted); margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  .footer-divider {
+    width: 40px; height: 1px;
+    background: var(--gold-dark);
+    margin: 14px auto;
+  }
+  .footer-info { color: var(--text-muted); font-size: 0.78rem; line-height: 1.8; }
+  .footer-info span { color: var(--gold); }
+
+  /* ═══════════════════════════
+     ADMIN PANEL
+  ═══════════════════════════ */
+  .admin-login {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    background: var(--black);
+  }
+  .login-box {
+    background: var(--black-card);
+    border: 1px solid var(--gold-dark);
+    border-radius: 16px;
+    padding: 40px 36px;
+    width: 100%; max-width: 380px;
+    text-align: center;
+  }
+  .login-box h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem; letter-spacing: 3px;
+    color: var(--gold); margin-bottom: 6px;
+  }
+  .login-box p { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 28px; }
+  .inp {
+    width: 100%;
+    background: var(--black);
+    border: 1px solid var(--black-border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    color: var(--cream); font-family: 'Barlow', sans-serif;
+    font-size: 0.95rem; outline: none; margin-bottom: 14px;
+    transition: border-color 0.2s;
+  }
+  .inp:focus { border-color: var(--gold-dark); }
+  .btn-gold {
+    width: 100%; background: var(--gold);
+    color: var(--black); border: none; border-radius: 8px;
+    padding: 12px; cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 1rem; letter-spacing: 2px;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .btn-gold:hover { background: var(--gold-light); transform: scale(1.02); }
+  .err { color: #EF5350; font-size: 0.8rem; margin-bottom: 10px; }
+
+  .admin-panel { padding-bottom: 60px; }
+  .admin-header {
+    background: var(--black-soft);
+    border-bottom: 1px solid var(--gold-dark);
+    padding: 16px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px;
+  }
+  .admin-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem; letter-spacing: 3px; color: var(--gold);
+  }
+  .admin-header-right { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .btn-sm {
+    padding: 7px 16px; border-radius: 6px; cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem; letter-spacing: 1px; font-weight: 700;
+    border: none; transition: all 0.2s;
+  }
+  .btn-add { background: var(--gold); color: var(--black); }
+  .btn-add:hover { background: var(--gold-light); }
+  .btn-logout { background: transparent; border: 1px solid #333; color: var(--text-muted); }
+  .btn-logout:hover { border-color: #555; color: #ccc; }
+  .btn-preview { background: transparent; border: 1px solid var(--gold-dark); color: var(--gold); }
+  .btn-preview:hover { background: var(--gold-dark); }
+
+  .admin-stats {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 14px; padding: 20px;
+  }
+  .stat-box {
+    background: var(--black-card);
+    border: 1px solid var(--black-border);
+    border-radius: 10px; padding: 16px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem; color: var(--gold);
+  }
+  .stat-label { font-size: 0.75rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+
+  .admin-table-wrap { padding: 0 20px 20px; overflow-x: auto; }
+  .admin-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  .admin-table th {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem; letter-spacing: 2px;
+    color: var(--gold); text-align: left;
+    padding: 10px 12px; border-bottom: 1px solid var(--gold-dark);
+    text-transform: uppercase; white-space: nowrap;
+  }
+  .admin-table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--black-border);
+    vertical-align: middle; color: var(--cream);
+  }
+  .admin-table tr:hover td { background: rgba(201,168,76,0.04); }
+  .btn-edit { background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid var(--gold-dark); }
+  .btn-edit:hover { background: var(--gold-dark); }
+  .btn-delete { background: rgba(229,57,53,0.15); color: #EF5350; border: 1px solid rgba(229,57,53,0.3); }
+  .btn-delete:hover { background: rgba(229,57,53,0.3); }
+
+  /* ─── MODAL ─── */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    display: none; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: var(--black-card);
+    border: 1px solid var(--gold-dark);
+    border-radius: 14px;
+    padding: 28px; width: 100%; max-width: 500px;
+    max-height: 90vh; overflow-y: auto;
+  }
+  .modal h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem; letter-spacing: 2px; color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .form-row { margin-bottom: 14px; }
+  .form-label {
+    display: block; font-size: 0.75rem; letter-spacing: 1px;
+    color: var(--text-muted); margin-bottom: 6px;
+    text-transform: uppercase; font-family: 'Barlow Condensed', sans-serif;
+  }
+  .form-row select {
+    width: 100%; background: var(--black);
+    border: 1px solid var(--black-border);
+    border-radius: 8px; padding: 10px 12px;
+    color: var(--cream); font-family: 'Barlow', sans-serif;
+    font-size: 0.9rem; outline: none; appearance: none;
+  }
+  .form-row select:focus { border-color: var(--gold-dark); }
+  .sizes-grid { display: flex; gap: 8px; flex-wrap: wrap; }
+  .size-check { display: none; }
+  .size-label {
+    padding: 6px 12px; border-radius: 4px;
+    border: 1px solid var(--black-border);
+    color: var(--text-muted); font-size: 0.8rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    cursor: pointer; transition: all 0.2s; user-select: none;
+  }
+  .size-check:checked + .size-label {
+    background: var(--gold-dark); border-color: var(--gold); color: var(--gold-light);
+  }
+  .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+  .modal-actions .btn-gold { flex: 1; width: auto; }
+  .btn-cancel { background: transparent; border: 1px solid #333; color: var(--text-muted); }
+  .btn-cancel:hover { border-color: #555; }
+
+  .wa-settings {
+    background: var(--black-card); border: 1px solid var(--black-border);
+    border-radius: 10px; padding: 20px; margin: 0 20px 20px;
+  }
+  .wa-settings h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem; letter-spacing: 2px;
+    color: var(--gold); margin-bottom: 14px; text-transform: uppercase;
+  }
+  .wa-row { display: flex; gap: 10px; align-items: flex-end; }
+  .wa-row .inp { margin-bottom: 0; flex: 1; }
+
+  /* Social Admin Settings */
+  .social-settings {
+    background: var(--black-card); border: 1px solid var(--black-border);
+    border-radius: 10px; padding: 20px; margin: 0 20px 20px;
+  }
+  .social-settings h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem; letter-spacing: 2px;
+    color: var(--gold); margin-bottom: 14px; text-transform: uppercase;
+  }
+  .soc-row { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
+  .soc-row label { width: 90px; color: var(--text-muted); font-size: 0.8rem; letter-spacing: 1px; font-family: 'Barlow Condensed', sans-serif; }
+  .soc-row .inp { margin-bottom: 0; flex: 1; }
+
+  @media (max-width: 520px) {
+    .admin-stats { grid-template-columns: 1fr 1fr; }
+    .modal { padding: 20px; }
+    .transport-item { font-size: 0.8rem; }
+    .social-links { flex-direction: column; align-items: center; }
+    .social-btn { width: 100%; max-width: 280px; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ PUBLIC STORE ═══ -->
+<div id="view-store" class="view active">
+
+  <nav>
+    <a class="nav-logo" href="#">
+      <img src="90E88AD0-E4AF-476F-BB6A-81F2F70D8E76.PNG" alt="Fanellatik Logo" onerror="this.style.display='none'">
+      <div class="nav-brand">Fanellatik<span>Football Jerseys</span></div>
+    </a>
+    <div class="nav-right">
+      <a id="nav-wa-link" href="#" class="nav-wa" target="_blank">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Na kontaktoni
+      </a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <!-- Logo watermark -->
+    <img class="hero-logo-bg" src="90E88AD0-E4AF-476F-BB6A-81F2F70D8E76.PNG" alt="" onerror="this.style.display='none'">
+
+    <div class="hero-tag">✦ Retro Never Goes Out Of Style ✦</div>
+    <h1>
+      <span class="brand-line">FANELLATIK</span>
+    </h1>
+    <p>Në Fanellatik gjeni stil, pasion dhe fanella që reflektojnë histori — për Fanatikët e Futbollit.</p>
+    <div class="hero-divider"></div>
+  </section>
+
+  <div class="filter-bar" id="filter-bar"></div>
+
+  <div class="search-wrap">
+    <input class="search-box" type="text" id="search-inp" placeholder="🔍  Kërko fanellë, klub, ligë..." oninput="renderCards()">
+  </div>
+
+  <div class="grid" id="cards-grid"></div>
+
+  <!-- Social Section -->
+  <div class="social-section">
+    <h3>Na Ndiqni</h3>
+    <p>Ndiq Fanellatik për koleksione të reja & oferta ekskluzive</p>
+    <div class="social-links" id="social-links-container">
+      <a id="social-instagram" href="#" class="social-btn instagram" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        Instagram
+      </a>
+      <a id="social-tiktok" href="#" class="social-btn tiktok" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V9a8.16 8.16 0 004.77 1.52V7.06a4.85 4.85 0 01-1-.37z"/></svg>
+        TikTok
+      </a>
+      <a id="social-facebook" href="#" class="social-btn facebook" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        Facebook
+      </a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-brand">FANELLATIK</div>
+    <div class="footer-sub">Football Jerseys</div>
+    <div class="footer-divider"></div>
+    <div class="footer-info">
+      <span>🚚 Transport në të gjithë Shqipërinë & Kosovën</span><br>
+      Të gjitha çmimet janë në LEK · Porosit nëpërmjet WhatsApp<br>
+      <span>© 2026 Fanellatik. Të gjitha të drejtat e rezervuara.</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══ ADMIN LOGIN ═══ -->
+<div id="view-login" class="view">
+  <div class="admin-login">
+    <div class="login-box">
+      <h2>⚙ Admin</h2>
+      <p>Panel i menaxhimit · Fanellatik</p>
+      <div class="err" id="login-err"></div>
+      <input class="inp" type="text" id="adm-user" placeholder="Përdoruesi">
+      <input class="inp" type="password" id="adm-pass" placeholder="Fjalëkalimi" onkeydown="if(event.key==='Enter')doLogin()">
+      <button class="btn-gold" onclick="doLogin()">HYRJA</button>
+      <button onclick="showStore()" style="margin-top:12px;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:0.8rem;">← Kthehu te dyqani</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ADMIN PANEL ═══ -->
+<div id="view-admin" class="view">
+  <div class="admin-panel">
+    <div class="admin-header">
+      <h2>⚙ Panel Admin — Fanellatik</h2>
+      <div class="admin-header-right">
+        <button class="btn-sm btn-preview" onclick="showStore()">👁 Shiko dyqanin</button>
+        <button class="btn-sm btn-add" onclick="openModal()">＋ Shto fanellë</button>
+        <button class="btn-sm btn-logout" onclick="doLogout()">Dil</button>
+      </div>
+    </div>
+
+    <div class="admin-stats" id="admin-stats"></div>
+
+    <!-- WA Settings -->
+    <div class="wa-settings">
+      <h4>📱 Numri WhatsApp</h4>
+      <div class="wa-row">
+        <input class="inp" type="text" id="wa-number-inp" placeholder="+355 6X XXX XXXX">
+        <button class="btn-gold" style="width:auto;padding:10px 20px;" onclick="saveWA()">Ruaj</button>
+      </div>
+      <small style="color:var(--text-muted);font-size:0.75rem;margin-top:8px;display:block;">Shembull: +355691234567</small>
+    </div>
+
+    <!-- Social Settings -->
+    <div class="social-settings">
+      <h4>📲 Rrjetet Sociale</h4>
+      <div class="soc-row">
+        <label>Instagram</label>
+        <input class="inp" type="text" id="soc-instagram" placeholder="https://instagram.com/fanellatik">
+      </div>
+      <div class="soc-row">
+        <label>TikTok</label>
+        <input class="inp" type="text" id="soc-tiktok" placeholder="https://tiktok.com/@fanellatik">
+      </div>
+      <div class="soc-row">
+        <label>Facebook</label>
+        <input class="inp" type="text" id="soc-facebook" placeholder="https://facebook.com/fanellatik">
+      </div>
+      <button class="btn-gold" style="width:auto;padding:10px 24px;margin-top:6px;" onclick="saveSocial()">Ruaj Rrjetet</button>
+    </div>
+
+    <div class="admin-table-wrap">
+      <table class="admin-table" id="admin-table">
+        <thead>
+          <tr>
+            <th>Emri</th>
+            <th>Ligja / Klubi</th>
+            <th>Çmimi</th>
+            <th>Stock</th>
+            <th>Masa</th>
+            <th>Veprime</th>
+          </tr>
+        </thead>
+        <tbody id="admin-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL ═══ -->
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal">
+    <h3 id="modal-title">Shto Fanellë</h3>
+    <div class="form-row">
+      <label class="form-label">Emri i Fanellës *</label>
+      <input class="inp" style="margin-bottom:0" type="text" id="f-name" placeholder="p.sh. Real Madrid Home 2024/25">
+    </div>
+    <div class="form-row">
+      <label class="form-label">Liga / Kampionat</label>
+      <select id="f-league-sel" onchange="toggleCustomLeague(this.value)">
+        <option value="La Liga">La Liga</option>
+        <option value="Premier League">Premier League</option>
+        <option value="Serie A">Serie A</option>
+        <option value="Bundesliga">Bundesliga</option>
+        <option value="Ligue 1">Ligue 1</option>
+        <option value="UCL">UCL – Champions League</option>
+        <option value="UEL">UEL – Europa League</option>
+        <option value="Kombëtare">Kombëtare</option>
+        <option value="custom">Tjetër (shkruaj)...</option>
+      </select>
+    </div>
+    <div class="form-row" id="custom-league-row" style="display:none">
+      <label class="form-label">Emri i Ligës</label>
+      <input class="inp" style="margin-bottom:0" type="text" id="f-league-custom" placeholder="Shkruaj ligën...">
+    </div>
+    <div class="form-row">
+      <label class="form-label">Çmimi (LEK) *</label>
+      <input class="inp" style="margin-bottom:0" type="number" id="f-price" placeholder="2500">
+    </div>
+    <div class="form-row">
+      <label class="form-label">Emoji / Ikonë</label>
+      <input class="inp" style="margin-bottom:0" type="text" id="f-emoji" placeholder="⚽ 🏆 🇪🇸 🔵 ⚪">
+    </div>
+    <div class="form-row">
+      <label class="form-label">URL Foto (opsionale)</label>
+      <input class="inp" style="margin-bottom:0" type="text" id="f-img" placeholder="https://...">
+    </div>
+    <div class="form-row">
+      <label class="form-label">Stock</label>
+      <select id="f-stock">
+        <option value="stock">✅ Disponibël</option>
+        <option value="few">⚠️ Pak mbetur</option>
+        <option value="out">❌ Nuk ka stock</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Masat e disponueshme</label>
+      <div class="sizes-grid" id="sizes-grid"></div>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Mesazh WhatsApp (opsionale)</label>
+      <input class="inp" style="margin-bottom:0" type="text" id="f-wa-msg" placeholder="Dua të porosis...">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-sm btn-cancel" onclick="closeModal()">Anulo</button>
+      <button class="btn-gold" onclick="saveItem()">RUAJ</button>
+    </div>
+  </div>
+</div>
+
+<!-- Secret admin trigger: click logo 5 times -->
+<script>
+const SIZES = ['XS','S','M','L','XL','XXL','3XL'];
+const ADMIN_USER = 'admin';
+const ADMIN_PASS = 'Fn@2026#Xk9!';
+
+// Secret logo tap counter
+let logoTapCount = 0, logoTapTimer = null;
+document.querySelector('.nav-logo').addEventListener('click', function(e) {
+  e.preventDefault();
+  logoTapCount++;
+  clearTimeout(logoTapTimer);
+  logoTapTimer = setTimeout(() => logoTapCount = 0, 2000);
+  if (logoTapCount >= 5) {
+    logoTapCount = 0;
+    showAdminLogin();
+  }
+});
+
+// ─── DATA ───
+function getData() {
+  const d = localStorage.getItem('fanellatik_data');
+  return d ? JSON.parse(d) : { items: getSampleData(), wa: '', social: { instagram:'', tiktok:'', facebook:'' } };
+}
+function saveData(d) { localStorage.setItem('fanellatik_data', JSON.stringify(d)); }
+
+function getSampleData() {
+  return [
+    { id:1, name:'Real Madrid Home 2024/25', league:'La Liga', price:2800, emoji:'⚪', stock:'stock', sizes:['S','M','L','XL'], img:'', waMsg:'' },
+    { id:2, name:'FC Barcelona Away 2024/25', league:'La Liga', price:2800, emoji:'🔵', stock:'stock', sizes:['M','L','XL','XXL'], img:'', waMsg:'' },
+    { id:3, name:'Manchester City Home', league:'Premier League', price:3000, emoji:'🔵', stock:'few', sizes:['L','XL'], img:'', waMsg:'' },
+    { id:4, name:'PSG Home 2024/25', league:'Ligue 1', price:2600, emoji:'🔴', stock:'stock', sizes:['S','M','L','XL','XXL'], img:'', waMsg:'' },
+    { id:5, name:'Champions League Final Edition', league:'UCL', price:3200, emoji:'🌟', stock:'stock', sizes:['M','L','XL'], img:'', waMsg:'' },
+    { id:6, name:'Kombëtarja Shqipëri Home', league:'Kombëtare', price:2200, emoji:'🦅', stock:'stock', sizes:['M','L','XL'], img:'', waMsg:'' },
+  ];
+}
+
+// ─── VIEWS ───
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function showStore() { renderStore(); showView('view-store'); }
+function showAdminLogin() { showView('view-login'); setTimeout(()=>document.getElementById('adm-user').focus(),100); }
+function showAdmin() { renderAdmin(); showView('view-admin'); }
+
+// ─── AUTH ───
+function doLogin() {
+  const u = document.getElementById('adm-user').value.trim();
+  const p = document.getElementById('adm-pass').value;
+  if (u === ADMIN_USER && p === ADMIN_PASS) {
+    sessionStorage.setItem('fan_auth','1');
+    document.getElementById('login-err').textContent = '';
+    showAdmin();
+  } else {
+    document.getElementById('login-err').textContent = '❌ Përdoruesi ose fjalëkalimi i gabuar.';
+  }
+}
+function doLogout() { sessionStorage.removeItem('fan_auth'); showStore(); }
+
+// ─── STORE RENDER ───
+let activeFilter = 'Të gjitha';
+
+function renderStore() {
+  const d = getData();
+  updateWALink(d.wa);
+  updateSocialLinks(d.social || {});
+  buildFilters(d.items);
+  renderCards();
+}
+
+function updateWALink(wa) {
+  const waClean = (wa||'').replace(/\D/g,'');
+  const navWa = document.getElementById('nav-wa-link');
+  navWa.href = waClean ? `https://wa.me/${waClean}` : '#';
+}
+
+function updateSocialLinks(social) {
+  const ig = document.getElementById('social-instagram');
+  const tt = document.getElementById('social-tiktok');
+  const fb = document.getElementById('social-facebook');
+  if (ig) ig.href = social.instagram || '#';
+  if (tt) tt.href = social.tiktok || '#';
+  if (fb) fb.href = social.facebook || '#';
+}
+
+function buildFilters(items) {
+  // Always show all fixed categories regardless of stock
+  const fixed = ['Të gjitha','La Liga','Premier League','Ligue 1','Bundesliga','Serie A','UCL','UEL','Kombëtare'];
+  const fromItems = items.map(i=>i.league).filter(Boolean);
+  const extra = [...new Set(fromItems)].filter(l => !fixed.includes(l));
+  const all = [...fixed, ...extra];
+  document.getElementById('filter-bar').innerHTML = all.map(l =>
+    `<button class="filter-btn ${l===activeFilter?'active':''}" onclick="setFilter('${l}')">${l}</button>`
+  ).join('');
+}
+
+function setFilter(f) {
+  activeFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.textContent === f));
+  renderCards();
+}
+
+function renderCards() {
+  const d = getData();
+  const q = (document.getElementById('search-inp')?.value||'').toLowerCase();
+  const waClean = (d.wa||'').replace(/\D/g,'');
+  let items = d.items;
+  if (activeFilter !== 'Të gjitha') items = items.filter(i => i.league === activeFilter);
+  if (q) items = items.filter(i => i.name.toLowerCase().includes(q) || (i.league||'').toLowerCase().includes(q));
+
+  const grid = document.getElementById('cards-grid');
+  if (!items.length) {
+    grid.innerHTML = `<div class="empty"><div class="emoji">🔍</div><div>Nuk u gjet asnjë fanellë.</div></div>`;
+    return;
+  }
+  grid.innerHTML = items.map((item,idx) => {
+    const bc = item.stock==='stock'?'badge-stock':item.stock==='few'?'badge-few':'badge-out';
+    const bt = item.stock==='stock'?'✅ Disponibël':item.stock==='few'?'⚠ Pak mbetur':'❌ Nuk ka';
+    const szHtml = SIZES.map(s=>`<span class="size-tag ${(item.sizes||[]).includes(s)?'avail':''}">${s}</span>`).join('');
+    const imgHtml = item.img
+      ? `<img class="card-img" src="${item.img}" alt="${item.name}" loading="lazy" onerror="this.outerHTML='<div class=\\'card-img placeholder\\'>${item.emoji||'👕'}</div>'">`
+      : `<div class="card-img placeholder" style="font-size:3.5rem">${item.emoji||'👕'}</div>`;
+    const msg = item.waMsg || `Përshëndetje! Dua të porosis: ${item.name} (${Number(item.price).toLocaleString()} LEK)`;
+    const waLink = waClean ? `https://wa.me/${waClean}?text=${encodeURIComponent(msg)}` : '#';
+    const isOut = item.stock==='out';
+    return `<div class="card" style="animation-delay:${idx*0.05}s">
+      ${imgHtml}
+      <div class="card-body">
+        <div class="card-league">${item.league||'—'}</div>
+        <div class="card-name">${item.name}</div>
+        <div class="card-sizes">${szHtml}</div>
+        <div class="card-footer">
+          <div class="card-price">${Number(item.price).toLocaleString()}<span>LEK</span></div>
+          <span class="badge ${bc}">${bt}</span>
+        </div>
+        <a href="${isOut?'#':waLink}" class="wa-btn ${isOut?'disabled':''}" ${isOut?'':'target="_blank"'}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          ${isOut?'Nuk ka stock':'Porosit në WhatsApp'}
+        </a>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ─── ADMIN ───
+function renderAdmin() {
+  const d = getData();
+  const items = d.items;
+  const total=items.length, inStock=items.filter(i=>i.stock==='stock').length;
+  const few=items.filter(i=>i.stock==='few').length, outS=items.filter(i=>i.stock==='out').length;
+  document.getElementById('admin-stats').innerHTML = `
+    <div class="stat-box"><div class="stat-num">${total}</div><div class="stat-label">Gjithsej</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:#66BB6A">${inStock}</div><div class="stat-label">Disponibël</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:#FFA726">${few}</div><div class="stat-label">Pak mbetur</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:#EF5350">${outS}</div><div class="stat-label">Nuk ka stock</div></div>`;
+  document.getElementById('wa-number-inp').value = d.wa||'';
+  const soc = d.social||{};
+  document.getElementById('soc-instagram').value = soc.instagram||'';
+  document.getElementById('soc-tiktok').value = soc.tiktok||'';
+  document.getElementById('soc-facebook').value = soc.facebook||'';
+  const bc={stock:'badge-stock',few:'badge-few',out:'badge-out'};
+  const bt={stock:'✅ Disponibël',few:'⚠ Pak mbetur',out:'❌ Nuk ka'};
+  document.getElementById('admin-tbody').innerHTML = items.map(item=>`
+    <tr>
+      <td><strong>${item.name}</strong></td>
+      <td>${item.league||'—'}</td>
+      <td><strong style="color:var(--gold-light)">${Number(item.price).toLocaleString()} LEK</strong></td>
+      <td><span class="badge ${bc[item.stock]}">${bt[item.stock]}</span></td>
+      <td style="font-size:0.8rem;color:var(--text-muted)">${(item.sizes||[]).join(', ')||'—'}</td>
+      <td>
+        <button class="btn-sm btn-edit" onclick="openModal(${item.id})">✏ Edito</button>
+        <button class="btn-sm btn-delete" style="margin-left:6px" onclick="deleteItem(${item.id})">✕</button>
+      </td>
+    </tr>`).join('')||'<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:30px">Nuk ka fanella. Shto të parin!</td></tr>';
+}
+
+function saveWA() {
+  const d=getData(); d.wa=document.getElementById('wa-number-inp').value.trim();
+  saveData(d); alert('✅ Numri WhatsApp u ruajt!');
+}
+
+function saveSocial() {
+  const d=getData();
+  d.social = {
+    instagram: document.getElementById('soc-instagram').value.trim(),
+    tiktok: document.getElementById('soc-tiktok').value.trim(),
+    facebook: document.getElementById('soc-facebook').value.trim(),
+  };
+  saveData(d); alert('✅ Rrjetet sociale u ruajtën!');
+}
+
+// ─── MODAL ───
+let editId=null;
+const LEAGUES_FIXED=['La Liga','Premier League','Serie A','Bundesliga','Ligue 1','UCL','UEL','Kombëtare','custom'];
+
+function toggleCustomLeague(v) {
+  document.getElementById('custom-league-row').style.display = v==='custom'?'block':'none';
+}
+
+function buildSizeGrid(sel=[]) {
+  document.getElementById('sizes-grid').innerHTML=SIZES.map(s=>`
+    <input type="checkbox" class="size-check" id="sz-${s}" value="${s}" ${sel.includes(s)?'checked':''}>
+    <label class="size-label" for="sz-${s}">${s}</label>`).join('');
+}
+
+function openModal(id=null) {
+  editId=id;
+  const d=getData();
+  const item=id?d.items.find(i=>i.id===id):null;
+  document.getElementById('modal-title').textContent=id?'✏ Edito Fanellën':'＋ Shto Fanellë';
+  document.getElementById('f-name').value=item?.name||'';
+  document.getElementById('f-price').value=item?.price||'';
+  document.getElementById('f-emoji').value=item?.emoji||'';
+  document.getElementById('f-img').value=item?.img||'';
+  document.getElementById('f-stock').value=item?.stock||'stock';
+  document.getElementById('f-wa-msg').value=item?.waMsg||'';
+  const sel=document.getElementById('f-league-sel');
+  const league=item?.league||'La Liga';
+  if(LEAGUES_FIXED.slice(0,-1).includes(league)){sel.value=league;document.getElementById('custom-league-row').style.display='none';}
+  else{sel.value='custom';document.getElementById('f-league-custom').value=league;document.getElementById('custom-league-row').style.display='block';}
+  buildSizeGrid(item?.sizes||[]);
+  document.getElementById('modal-backdrop').classList.add('open');
+  document.getElementById('f-name').focus();
+}
+
+function closeModal() { document.getElementById('modal-backdrop').classList.remove('open'); editId=null; }
+document.getElementById('modal-backdrop').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+function saveItem() {
+  const name=document.getElementById('f-name').value.trim();
+  const price=parseInt(document.getElementById('f-price').value);
+  if(!name){alert('Emri është i detyrueshëm!');return;}
+  if(!price||price<=0){alert('Çmimi duhet të jetë valid!');return;}
+  const selVal=document.getElementById('f-league-sel').value;
+  const league=selVal==='custom'?document.getElementById('f-league-custom').value.trim():selVal;
+  const sizes=[...document.querySelectorAll('.size-check:checked')].map(c=>c.value);
+  const item={name,league,price,emoji:document.getElementById('f-emoji').value.trim()||'👕',img:document.getElementById('f-img').value.trim(),stock:document.getElementById('f-stock').value,sizes,waMsg:document.getElementById('f-wa-msg').value.trim()};
+  const d=getData();
+  if(editId){const idx=d.items.findIndex(i=>i.id===editId);if(idx>-1){item.id=editId;d.items[idx]=item;}}
+  else{item.id=Date.now();d.items.push(item);}
+  saveData(d);closeModal();renderAdmin();
+}
+
+function deleteItem(id) {
+  if(!confirm('Je i sigurt që dëshiron ta fshish këtë fanellë?'))return;
+  const d=getData();d.items=d.items.filter(i=>i.id!==id);saveData(d);renderAdmin();
+}
+
+// INIT
+renderStore();
+</script>
+</body>
+</html>
